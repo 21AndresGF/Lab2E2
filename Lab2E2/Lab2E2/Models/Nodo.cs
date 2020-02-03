@@ -7,10 +7,16 @@ namespace Lab2E2.Models
 {
     public class Nodo<T> where  T:IComparable
     {
-        int posicion { get; set;}
-        int anterior { get; set;}
-        int siguiente { get; set; }
-        T dato { get; set; }
+        public List<T> Datos = new List<T>();
+        List<Nodo<T>> Hijos = new List<Nodo<T>>();
 
+        public void insertar(T dato) 
+        {
+            
+        }
+        public T search(T dato) 
+        {
+            return dato;
+        }
     }
 }
