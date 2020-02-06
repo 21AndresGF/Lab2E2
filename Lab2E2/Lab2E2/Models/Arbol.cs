@@ -8,6 +8,8 @@ namespace Lab2E2.Models
     public class Arbol<BebidaClase> where BebidaClase : Icomparable
     {
         public int grado;
+        public int posicion1;
+        public BebidaClase objeto1;
 
         public Arbol()
         {
@@ -16,11 +18,23 @@ namespace Lab2E2.Models
         
         public int root { get; set; }
 
-        public search(BebidaClase objeto)
+        public void search (BebidaClase objeto, int posicion)
         {
-            BebidaClase dato;
-            dato = Nodo.search(objeto);
-            return dato;
+            objeto = objeto1;
+            posicion = posicion1;
+            return objeto;
         }
+
+        public void insertar()
+        {
+
+        }
+
+        //public search(BebidaClase objeto)
+        //{
+        //    BebidaClase dato;
+        //    dato = Nodo.search(objeto);
+        //    return dato;
+        //}
     }
 }
