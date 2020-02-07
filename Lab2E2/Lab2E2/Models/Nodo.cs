@@ -11,17 +11,15 @@ namespace Lab2E2.Models
         int rango;
         public List<List<T>> valores;
         public List<T> Datos;
-        public List<int> NoHijos;
-        public int[] hijos;
+        public List<List<int>> hijos;
         public List<int> id;
         public List<int> padre;
 
-        bool isLeaf;
         public Nodo(int dato)
         {
             rango = dato;
             Datos = new List<T>();
-            hijos = NoHijos.ToArray();
+            hijos = new List<List<int>>();
             id = new List<int>();
             posicion = 1;
 
@@ -40,7 +38,9 @@ namespace Lab2E2.Models
         }
         public void NewBrother(int posicion, int hermano)
         {
+            List<int> aux = new List<int>();
             id.Add(posicion + 1);
+            valores.Add(new List<T>());
             if (HasFather(hermano))
             {
                 padre.Add(padre[hermano]);
@@ -48,10 +48,12 @@ namespace Lab2E2.Models
             else
             {
                 padre.Add(padre[posicion + 2]);
+                hijos[padre[hermano]].Add(posicion + 1);
+                aux.AddRange(hijos[padre[hermano]]);
+                hijos[padre[hermano]].RemoveRange(hijos.IndexOf(hijos[padre[hermano]]),hijos[padre[hermano]].Count);
+
             }
-            Array.Resize(ref hijos, hijos.Length + 1);
-            hijos[posicion + 1] = 0;
-            valores.InsertRange(posicion + 1, null);
+            
 
 
         }
@@ -71,42 +73,21 @@ namespace Lab2E2.Models
             valores[nodo].Sort();
             if (IsFull(nodo))
             {
-                if (HasFather(nodo))
+                temp.AddRange(valores[nodo]);
+                NewBrother(posicion, nodo);
+                valores[nodo].RemoveRange(valores.IndexOf(valores[nodo]), valores[nodo].Count);
+                for (int i = 0; i < temp.Count; i++)
                 {
-                    temp.AddRange(valores[nodo]);
-                    NewBrother(posicion, nodo);
-                    valores[nodo].RemoveRange(valores.IndexOf(valores[nodo]), valores[nodo].Count);
-                    for (int i = 0; i < temp.Count; i++)
+                    if (i < temp.Count / 2)
                     {
-                        if (i < temp.Count / 2)
-                        {
-                            valores[nodo].Add(temp[i]);
-                        }
-                        else if (i > temp.Count / 2)
-                        {
-                            valores[posicion + 1].Add(temp[i]);
-                        }
+                        valores[nodo].Add(temp[i]);
                     }
-                    insertar(temp[temp.Count / 2],padre[nodo]);
+                    else if (i > temp.Count / 2)
+                    {
+                        valores[posicion + 1].Add(temp[i]);
+                    }
                 }
-                else
-                {
-                    temp.AddRange(valores[nodo]);
-                    NewBrother(posicion, nodo);
-                    valores[nodo].RemoveRange(valores.IndexOf(valores[nodo]), valores[nodo].Count);
-                    for (int i = 0; i < temp.Count; i++)
-                    {
-                        if (i < temp.Count / 2)
-                        {
-                            valores[nodo].Add(temp[i]);
-                        }
-                        else if (i > temp.Count / 2)
-                        {
-                            valores[posicion + 1].Add(temp[i]);
-                        }
-                    }
-                    NewFather();
-                } 
+                
             }
             
         }
